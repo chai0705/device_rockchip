@@ -599,39 +599,40 @@ function find_string_in_config(){
 
 
 function build_all(){
-	echo "============================================"
-	echo "TARGET_ARCH=$RK_ARCH"
-	echo "TARGET_PLATFORM=$RK_TARGET_PRODUCT"
-	echo "TARGET_UBOOT_CONFIG=$RK_UBOOT_DEFCONFIG"
-	echo "TARGET_SPL_CONFIG=$RK_SPL_DEFCONFIG"
-	echo "TARGET_KERNEL_CONFIG=$RK_KERNEL_DEFCONFIG"
-	echo "TARGET_KERNEL_DTS=$RK_KERNEL_DTS"
-	echo "TARGET_TOOLCHAIN_CONFIG=$RK_CFG_TOOLCHAIN"
-	echo "============================================"
+    echo "============================================"
+    echo "TARGET_ARCH=$RK_ARCH"
+    echo "TARGET_PLATFORM=$RK_TARGET_PRODUCT"
+    echo "TARGET_UBOOT_CONFIG=$RK_UBOOT_DEFCONFIG"
+    echo "TARGET_SPL_CONFIG=$RK_SPL_DEFCONFIG"
+    echo "TARGET_KERNEL_CONFIG=$RK_KERNEL_DEFCONFIG"
+    echo "TARGET_KERNEL_DTS=$RK_KERNEL_DTS"
+    echo "TARGET_TOOLCHAIN_CONFIG=$RK_CFG_TOOLCHAIN"
+    echo "============================================"
 
-	# NOTE: On secure boot-up world, if the images build with fit(flattened image tree)
-	#       we will build kernel and ramboot firstly,
-	#       and then copy images into u-boot to sign the images.
-	if [ "$RK_RAMDISK_SECURITY_BOOTUP" != "true" ];then
-		#note: if build spl, it will delete loader.bin in uboot directory,
-		# so can not build uboot and spl at the same time.
+    # NOTE: On secure boot-up world, if the images build with fit(flattened image tree)
+    #       we will build kernel and ramboot firstly,
+    #       and then copy images into u-boot to sign the images.
+    if [ "$RK_RAMDISK_SECURITY_BOOTUP" != "true" ]; then
+        # note: if build spl, it will delete loader.bin in uboot directory,
+        # so can not build uboot and spl at the same time.
 
-	build_uboot
+        build_uboot
 
+        if [ "$RK_EXTBOOT" = "true" ]; then
+            build_kerneldeb
+            build_extboot
+        else
+            build_kernel
+        fi
+    fi
 
-	if [ "$RK_EXTBOOT" = "true" ]; then
-		build_kerneldeb
-		build_extboot
-	else
-		build_kernel
-	fi
+    build_rootfs ${RK_ROOTFS_SYSTEM:-ubuntu}
 
-	build_rootfs ${RK_ROOTFS_SYSTEM:-ubuntu}
+    build_uboot
 
-	build_uboot
-
-	finish_build
+    finish_build
 }
+
 
 function build_cleanall(){
 	echo "clean uboot, kernel, rootfs, recovery"
