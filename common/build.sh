@@ -410,21 +410,18 @@ function build_extboot(){
 	
 	echo -e "\e[36m 生成extLinuxBoot镜像开始 \e[0m"
 
-	# 获取内核版本号
-	KERNEL_VERSION=$(cat $TOP_DIR/kernel/include/config/kernel.release)
+    # 获取内核版本号
+    KERNEL_VERSION=$(cat $SDK_DIR/kernel/include/config/kernel.release)
 
-	# 定义extboot镜像和相关目录
-	EXTBOOT_IMG=${TOP_DIR}/kernel/extboot.img
-	EXTBOOT_DIR=${TOP_DIR}/kernel/extboot
-	EXTBOOT_DTB=${EXTBOOT_DIR}/dtb/
+    # 定义extboot镜像和相关目录
+    EXTBOOT_IMG=${SDK_DIR}/kernel/extboot.img
+    EXTBOOT_DIR=${SDK_DIR}/kernel/extboot
+    EXTBOOT_DTB=${EXTBOOT_DIR}/dtb/
 
-	# 清理并创建extboot目录结构
-	rm -rf $EXTBOOT_DIR
-	mkdir -p $EXTBOOT_DIR
-	mkdir -p $EXTBOOT_DTB
-
-	# 复制内核镜像
-	cp ${TOP_DIR}/$RK_KERNEL_IMG $EXTBOOT_DIR/Image-$KERNEL_VERSION
+    # 清理并创建extboot目录结构
+    rm -rf $EXTBOOT_DIR
+    mkdir -p $EXTBOOT_DIR
+    mkdir -p $EXTBOOT_DTB
 
 	# 配置extlinux启动项
 	mkdir -p $EXTBOOT_DIR/extlinux
@@ -436,8 +433,9 @@ function build_extboot(){
 	# 根据架构选择合适的设备树和覆盖文件
 	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/*.dtb $EXTBOOT_DTB
 
+
 	# 复制设备树文件
-	cp $EXTBOOT_DTB/${RK_KERNEL_DTS}.dtb $EXTBOOT_DIR/rk-kernel.dtb
+	cp -f $EXTBOOT_DTB/${RK_KERNEL_DTS}.dtb $EXTBOOT_DIR/rk-kernel.dtb
 
 	# 清理并生成ext2格式的extboot镜像
 	rm -rf $EXTBOOT_IMG && truncate -s 128M $EXTBOOT_IMG
