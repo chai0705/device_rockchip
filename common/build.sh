@@ -411,11 +411,11 @@ function build_extboot(){
 	echo -e "\e[36m 生成extLinuxBoot镜像开始 \e[0m"
 
     # 获取内核版本号
-    KERNEL_VERSION=$(cat $SDK_DIR/kernel/include/config/kernel.release)
+    KERNEL_VERSION=$(cat $TOP_DIR/kernel/include/config/kernel.release)
 
     # 定义extboot镜像和相关目录
-    EXTBOOT_IMG=${SDK_DIR}/kernel/extboot.img
-    EXTBOOT_DIR=${SDK_DIR}/kernel/extboot
+    EXTBOOT_IMG=${TOP_DIR}/kernel/extboot.img
+    EXTBOOT_DIR=${TOP_DIR}/kernel/extboot
     EXTBOOT_DTB=${EXTBOOT_DIR}/dtb/
 
     # 清理并创建extboot目录结构
