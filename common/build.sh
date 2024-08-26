@@ -424,7 +424,7 @@ function build_extboot(){
     mkdir -p $EXTBOOT_DTB
 
     # 复制内核镜像
-    cp ${SDK_DIR}/$RK_KERNEL_IMG $EXTBOOT_DIR/Image-$KERNEL_VERSION
+    cp ${TOP_DIR}/$RK_KERNEL_IMG $EXTBOOT_DIR/Image-$KERNEL_VERSION
 
 	# 配置extlinux启动项
 	mkdir -p $EXTBOOT_DIR/extlinux
