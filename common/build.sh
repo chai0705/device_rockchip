@@ -422,6 +422,8 @@ function build_extboot(){
     rm -rf $EXTBOOT_DIR
     mkdir -p $EXTBOOT_DIR
     mkdir -p $EXTBOOT_DTB
+	mkdir -p $EXTBOOT_DIR/uEnv
+	mkdir -p $EXTBOOT_DIR/kerneldeb
 
     # 复制内核镜像
     cp ${TOP_DIR}/$RK_KERNEL_IMG $EXTBOOT_DIR/Image-$KERNEL_VERSION
@@ -435,11 +437,32 @@ function build_extboot(){
 
 	# 根据架构选择合适的设备树和覆盖文件
 	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/*.dtb $EXTBOOT_DTB
-
+	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/uEnv/uEnv*.txt $EXTBOOT_DIR/uEnv
+	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/uEnv/boot.cmd $EXTBOOT_DIR/
 
 	# 复制设备树文件
 	cp -f $EXTBOOT_DTB/${RK_KERNEL_DTS}.dtb $EXTBOOT_DIR/rk-kernel.dtb
+	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/uEnv/uEnv*.txt $EXTBOOT_DIR/uEnv
+	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/uEnv/boot.cmd $EXTBOOT_DIR/
 
+	# 如果存在initrd文件，则复制到extboot目录
+	cp ${TOP_DIR}/initrd/* $EXTBOOT_DIR/
+
+	# 如果存在boot.cmd文件，则生成boot.scr启动脚本
+	if [[ -e $EXTBOOT_DIR/boot.cmd ]]; then
+		${TOP_DIR}/u-boot/tools/mkimage -T script -C none -d $EXTBOOT_DIR/boot.cmd $EXTBOOT_DIR/boot.scr
+	fi
+
+	# 复制其他内核相关文件
+	cp ${TOP_DIR}/kernel/.config $EXTBOOT_DIR/config-$KERNEL_VERSION
+	cp ${TOP_DIR}/kernel/System.map $EXTBOOT_DIR/System.map-$KERNEL_VERSION
+	cp ${TOP_DIR}/kernel/logo_kernel.bmp $EXTBOOT_DIR/
+	cp ${TOP_DIR}/kernel/logo_boot.bmp $EXTBOOT_DIR/logo.bmp
+
+	# 复制生成的Debian包
+	cp ${TOP_DIR}/linux-headers-"$KERNEL_VERSION"_"$KERNEL_VERSION"-*.deb $EXTBOOT_DIR/kerneldeb
+	cp ${TOP_DIR}/linux-image-"$KERNEL_VERSION"_"$KERNEL_VERSION"-*.deb $EXTBOOT_DIR/kerneldeb
+	
 	# 清理并生成ext2格式的extboot镜像
 	rm -rf $EXTBOOT_IMG && truncate -s 128M $EXTBOOT_IMG
 	fakeroot mkfs.ext2 -F -L "boot" -d $EXTBOOT_DIR $EXTBOOT_IMG
