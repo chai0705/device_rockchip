@@ -375,8 +375,9 @@ function build_kerneldeb(){
 	rm -f linux-headers-*.deb linux-image-*.deb linux-libc-dev*.deb
 
 	cd kernel
-	make ARCH=$RK_ARCH $RK_KERNEL_DEFCONFIG $RK_KERNEL_DEFCONFIG_FRAGMENT
-	make ARCH=$RK_ARCH bindeb-pkg RK_KERNEL_DTS=$RK_KERNEL_DTS -j$RK_JOBS
+	make ARCH=$RK_ARCH LOCALVERSION= $RK_KERNEL_DEFCONFIG $RK_KERNEL_DEFCONFIG_FRAGMENT
+	make ARCH=$RK_ARCH LOCALVERSION= bindeb-pkg RK_KERNEL_DTS=$RK_KERNEL_DTS -j$RK_JOBS
+
 	finish_build
 }
 
@@ -422,6 +423,8 @@ function build_extboot(){
     rm -rf $EXTBOOT_DIR
     mkdir -p $EXTBOOT_DIR
     mkdir -p $EXTBOOT_DTB
+
+	mkdir -p $EXTBOOT_DTB/overlay
 	mkdir -p $EXTBOOT_DIR/uEnv
 	mkdir -p $EXTBOOT_DIR/kerneldeb
 
@@ -439,11 +442,11 @@ function build_extboot(){
 	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/*.dtb $EXTBOOT_DTB
 	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/uEnv/uEnv*.txt $EXTBOOT_DIR/uEnv
 	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/uEnv/boot.cmd $EXTBOOT_DIR/
+	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/overlay/*.dtbo $EXTBOOT_DTB/overlay
 
 	# 复制设备树文件
 	cp -f $EXTBOOT_DTB/${RK_KERNEL_DTS}.dtb $EXTBOOT_DIR/rk-kernel.dtb
-	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/uEnv/uEnv*.txt $EXTBOOT_DIR/uEnv
-	cp ${TOP_DIR}/kernel/arch/${RK_ARCH}/boot/dts/rockchip/uEnv/boot.cmd $EXTBOOT_DIR/
+
 
 	# 如果存在initrd文件，则复制到extboot目录
 	cp ${TOP_DIR}/initrd/* $EXTBOOT_DIR/
