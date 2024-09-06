@@ -4,6 +4,15 @@ export LC_ALL=C
 export LD_LIBRARY_PATH=
 unset RK_CFG_TOOLCHAIN
 
+# 判断是否拥有root权限，如果没有则使用sudo重新运行脚本
+if [[ "${EUID}" == "0" ]]; then
+		:
+else
+		echo -e "\033[42;36m 该脚本需要root权限，尝试使用sudo重新运行 \033[0m"
+		sudo "${0}" "$@"
+		exit $?
+fi
+
 err_handler() {
 	ret=$?
 	[ "$ret" -eq 0 ] && return
@@ -496,24 +505,12 @@ function build_modules(){
 
 
 function build_ubuntu(){
-	ARCH=${RK_UBUNTU_ARCH:-${RK_ARCH}}
-	case $ARCH in
-		arm|armhf) ARCH=armhf ;;
-		*) ARCH=arm64 ;;
-	esac
-
-	echo "=========Start building ubuntu for $ARCH========="
-	echo "==RK_ROOTFS_DEBUG:$RK_ROOTFS_DEBUG RK_ROOTFS_TARGET:$RK_ROOTFS_TARGET=="
+	echo "=========Start building ubuntu:$RK_ROOTFS_TARGE========="
 	cd ubuntu
-
 
 	if [ ! -e ubuntu-$RK_ROOTFS_TARGET-rootfs.img ]; then
 		echo "[ No ubuntu-$RK_ROOTFS_TARGET-rootfs.img, Run Make Ubuntu Scripts ]"
-		if [ ! -e ubuntu-base-$RK_ROOTFS_TARGET-$ARCH-*.tar.gz ]; then
-			ARCH=arm64 TARGET=$RK_ROOTFS_TARGET ./mk-base-ubuntu.sh
-		fi
-
-		VERSION=$RK_ROOTFS_DEBUG TARGET=$RK_ROOTFS_TARGET ARCH=$ARCH SOC=$RK_SOC ./mk-ubuntu-rootfs.sh
+		TARGET=$RK_ROOTFS_TARGET SOC=$RK_SOC ./mk-ubuntu-rootfs.sh
 	else
 		echo "[    Already Exists IMG,  Skip Make Ubuntu Scripts    ]"
 		echo "[ Delate Ubuntu-$RK_ROOTFS_TARGET-rootfs.img To Rebuild Ubuntu IMG ]"
@@ -523,43 +520,16 @@ function build_ubuntu(){
 }
 
 function build_debian(){
-	ARCH=${RK_DEBIAN_ARCH:-${RK_ARCH}}
-	case $ARCH in
-		arm|armhf) ARCH=armhf ;;
-		*) ARCH=arm64 ;;
-	esac
-
-	echo "=========Start building debian for $ARCH========="
-	echo "RK_DEBIAN_VERSION: $RK_DEBIAN_VERSION"
-	echo "RK_ROOTFS_TARGET: $RK_ROOTFS_TARGET"
-	echo "RK_ROOTFS_DEBUG: $RK_ROOTFS_DEBUG"
-	echo " "
-
+	echo "=========Start building debian:$RK_ROOTFS_TARGE========="
 	cd debian
 
-	if [[ "$RK_DEBIAN_VERSION" == "stretch" || "$RK_DEBIAN_VERSION" == "9" ]]; then
-		RELEASE='stretch'
-	elif [[ "$RK_DEBIAN_VERSION" == "buster" || "$RK_DEBIAN_VERSION" == "10" ]]; then
-		RELEASE='buster'
-	elif [[ "$RK_DEBIAN_VERSION" == "bullseye" || "$RK_DEBIAN_VERSION" == "11" ]]; then
-		RELEASE='bullseye'
-	else
-		echo -e "\033[36m please input the os type,stretch or buster...... \033[0m"
-	fi
-
-	if [ ! -e linaro-$RK_ROOTFS_TARGET-rootfs.img ]; then
-		echo "[ No linaro-$RK_ROOTFS_TARGET-rootfs.img, Run Make Debian Scripts ]"
-		if [ ! -e linaro-$RELEASE-$RK_ROOTFS_TARGET-alip-*.tar.gz ]; then
-			echo "[ build linaro-$RELEASE-$RK_ROOTFS_TARGET-alip-*.tar.gz ]"
-			RELEASE=$RELEASE TARGET=$RK_ROOTFS_TARGET ARCH=$ARCH ./mk-base-debian.sh
-		fi
-
-		RELEASE=$RELEASE TARGET=$RK_ROOTFS_TARGET VERSION=$RK_ROOTFS_DEBUG SOC=$RK_SOC ARCH=$ARCH ./mk-rootfs.sh
+	if [ ! -e debian-$RK_ROOTFS_TARGET-rootfs.img ]; then
+		echo "[ No debian-$RK_ROOTFS_TARGET-rootfs.img, Run Make Debian Scripts ]"
+		TARGET=$RK_ROOTFS_TARGET SOC=$RK_SOC ./mk-debian-rootfs.sh
 	else
 		echo "[    Already Exists IMG,  Skip Make Debian Scripts    ]"
-		echo "[ Delate linaro-$RK_ROOTFS_TARGET-rootfs.img To Rebuild Debian IMG ]"
+		echo "[ Delate Debian-$RK_ROOTFS_TARGET-rootfs.img To Rebuild Debian IMG ]"
 	fi
-
 
 	finish_build
 }
