@@ -64,7 +64,7 @@ export RK_ROOTFS_SYSTEM=debian
 # debian version (debian10: buster, debian11: bullseye)
 export RK_DEBIAN_VERSION=11
 # 定义默认rootfs是否为桌面版  desktop :桌面版(可替换为 xfce lxde gnome)  lite ：控制台版
-export RK_ROOTFS_TARGET=gnome
+export RK_ROOTFS_TARGET=xfce
 # 定义默认rootfs是否添加DEBUG工具  debug :添加 	none :不添加
 export RK_ROOTFS_DEBUG=debug
 # 使用exboot内核分区
