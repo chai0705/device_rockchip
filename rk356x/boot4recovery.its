@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Rockchip Electronics Co., Ltd
+ * Copyright (C) 2021 Rockchip Electronics Co., Ltd
  *
  * SPDX-License-Identifier: GPL-2.0
  */
@@ -10,7 +10,7 @@
 
     images {
         fdt {
-            data = /incbin/("kernel/arch/arm64/boot/dts/rk3568-evb1-ddr4-v10-linux.dtb");
+            data = /incbin/("kernel/arch/arm64/boot/dts/rockchip/rk3588-evb1-lp4-v10-linux.dtb");
             type = "flat_dt";
             arch = "arm64";
             compression = "none";

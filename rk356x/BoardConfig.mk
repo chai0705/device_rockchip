@@ -1,1 +1,0 @@
-BoardConfig-LubanCat-RK3566-debian-lite.mk

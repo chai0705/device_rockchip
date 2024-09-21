@@ -38,8 +38,6 @@ export RK_JOBS=32
 export RK_TARGET_PRODUCT=rk3588
 # Set rootfs type, including ext2 ext4 squashfs
 export RK_ROOTFS_TYPE=ext4
-# yocto machine
-export RK_YOCTO_MACHINE=rockchip-rk3588-evb
 # rootfs image path
 export RK_ROOTFS_IMG=rockdev/rootfs.${RK_ROOTFS_TYPE}
 # Set ramboot image type
@@ -61,11 +59,7 @@ export RK_SOC=rk3588
 export RK_PKG_NAME=lubancat-${RK_UBOOT_DEFCONFIG}
 # 定义默认rootfs为 debian
 export RK_ROOTFS_SYSTEM=debian
-# debian version (debian10: buster, debian11: bullseye)
-export RK_DEBIAN_VERSION=11
 # 定义默认rootfs是否为桌面版  desktop :桌面版(可替换为 xfce lxde gnome)  lite ：控制台版
 export RK_ROOTFS_TARGET=xfce
-# 定义默认rootfs是否添加DEBUG工具  debug :添加 	none :不添加
-export RK_ROOTFS_DEBUG=debug
 # 使用exboot内核分区
 export RK_EXTBOOT=true
