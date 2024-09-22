@@ -11,7 +11,7 @@ export RK_KERNEL_DEFCONFIG=rockchip_linux_defconfig
 # Kernel defconfig fragment
 export RK_KERNEL_DEFCONFIG_FRAGMENT=
 # Kernel dts
-export RK_KERNEL_DTS=rk3568-topeet-full
+export RK_KERNEL_DTS=topeet-rk3568-linux
 # boot image type
 export RK_BOOT_IMG=boot.img
 # kernel image path
@@ -35,7 +35,7 @@ export RK_CFG_PCBA=
 # Build jobs
 export RK_JOBS=32
 # target chip
-export RK_TARGET_PRODUCT=rk3588
+export RK_TARGET_PRODUCT=rk3568
 # Set rootfs type, including ext2 ext4 squashfs
 export RK_ROOTFS_TYPE=ext4
 # rootfs image path

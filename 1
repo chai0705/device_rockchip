@@ -3,7 +3,7 @@
 # Target arch
 export RK_ARCH=arm64
 # Uboot defconfig
-export RK_UBOOT_DEFCONFIG=rk3568
+export RK_UBOOT_DEFCONFIG=rk3588
 # Uboot image format type: fit(flattened image tree)
 export RK_UBOOT_FORMAT_TYPE=fit
 # Kernel defconfig
@@ -11,7 +11,7 @@ export RK_KERNEL_DEFCONFIG=rockchip_linux_defconfig
 # Kernel defconfig fragment
 export RK_KERNEL_DEFCONFIG_FRAGMENT=
 # Kernel dts
-export RK_KERNEL_DTS=topeet-rk3568-linux
+export RK_KERNEL_DTS=topeet-rk3588-linux
 # boot image type
 export RK_BOOT_IMG=boot.img
 # kernel image path
@@ -35,7 +35,7 @@ export RK_CFG_PCBA=
 # Build jobs
 export RK_JOBS=32
 # target chip
-export RK_TARGET_PRODUCT=rk3568
+export RK_TARGET_PRODUCT=rk3588
 # Set rootfs type, including ext2 ext4 squashfs
 export RK_ROOTFS_TYPE=ext4
 # rootfs image path
@@ -54,7 +54,7 @@ export RK_DISTRO_MODULE=
 export RK_BOARD_PRE_BUILD_SCRIPT=app-build.sh
 
 # SOC
-export RK_SOC=rk3568
+export RK_SOC=rk3588
 # build.sh save 打包时名称
 export RK_PKG_NAME=topeet-${RK_UBOOT_DEFCONFIG}
 # 定义默认rootfs为 debian
