@@ -402,7 +402,7 @@ function build_extboot(){
 	echo "内核设备树        =$RK_KERNEL_DTS"
 	echo "内核配置片段      =$RK_KERNEL_DEFCONFIG_FRAGMENT"
 	echo "====================================="
-	
+
 	# 输出当前目录路径
 	pwd
 
@@ -417,7 +417,7 @@ function build_extboot(){
 	make ARCH=$RK_ARCH $RK_KERNEL_DTS.img -j$RK_JOBS
 	# 编译设备树文件
 	make ARCH=$RK_ARCH dtbs -j$RK_JOBS
-	
+
 	echo -e "\e[36m 生成extLinuxBoot镜像开始 \e[0m"
 
     # 获取内核版本号
@@ -474,7 +474,7 @@ function build_extboot(){
 	# 复制生成的Debian包
 	cp ${TOP_DIR}/linux-headers-"$KERNEL_VERSION"_"$KERNEL_VERSION"-*.deb $EXTBOOT_DIR/kerneldeb
 	cp ${TOP_DIR}/linux-image-"$KERNEL_VERSION"_"$KERNEL_VERSION"-*.deb $EXTBOOT_DIR/kerneldeb
-	
+
 	# 清理并生成ext2格式的extboot镜像
 	rm -rf $EXTBOOT_IMG && truncate -s 128M $EXTBOOT_IMG
 	fakeroot mkfs.ext2 -F -L "boot" -d $EXTBOOT_DIR $EXTBOOT_IMG
@@ -510,7 +510,7 @@ function build_ubuntu(){
 
 	if [ ! -e ubuntu-$RK_ROOTFS_TARGET-rootfs.img ]; then
 		echo "[ No ubuntu-$RK_ROOTFS_TARGET-rootfs.img, Run Make Ubuntu Scripts ]"
-		TARGET=$RK_ROOTFS_TARGET SOC=$RK_SOC ./mk-ubuntu-rootfs.sh
+		TARGET=$RK_ROOTFS_TARGET SOC=$RK_SOC ARCH=arm64 ./mk-ubuntu-rootfs.sh
 	else
 		echo "[    Already Exists IMG,  Skip Make Ubuntu Scripts    ]"
 		echo "[ Delate Ubuntu-$RK_ROOTFS_TARGET-rootfs.img To Rebuild Ubuntu IMG ]"
@@ -525,7 +525,7 @@ function build_debian(){
 
 	if [ ! -e debian-$RK_ROOTFS_TARGET-rootfs.img ]; then
 		echo "[ No debian-$RK_ROOTFS_TARGET-rootfs.img, Run Make Debian Scripts ]"
-		TARGET=$RK_ROOTFS_TARGET SOC=$RK_SOC ./mk-debian-rootfs.sh
+		TARGET=$RK_ROOTFS_TARGET SOC=$RK_SOC ARCH=arm64 ./mk-debian-rootfs.sh
 	else
 		echo "[    Already Exists IMG,  Skip Make Debian Scripts    ]"
 		echo "[ Delate Debian-$RK_ROOTFS_TARGET-rootfs.img To Rebuild Debian IMG ]"
@@ -673,7 +673,7 @@ function build_updateimg(){
 	echo mount and write build info
 	sudo mount rootfs.img mount-tmp/
 	sudo sh -c "echo ' * $ZIP_NAME' > mount-tmp/etc/build-release"
-	sudo sync 
+	sudo sync
 	sudo umount mount-tmp/
 	rm -rf mount-tmp/
 
