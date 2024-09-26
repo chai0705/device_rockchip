@@ -468,8 +468,6 @@ function build_extboot(){
 	# 复制其他内核相关文件
 	cp ${TOP_DIR}/kernel/.config $EXTBOOT_DIR/config-$KERNEL_VERSION
 	cp ${TOP_DIR}/kernel/System.map $EXTBOOT_DIR/System.map-$KERNEL_VERSION
-	cp ${TOP_DIR}/kernel/logo_kernel.bmp $EXTBOOT_DIR/
-	cp ${TOP_DIR}/kernel/logo_boot.bmp $EXTBOOT_DIR/logo.bmp
 
 	# 复制生成的Debian包
 	cp ${TOP_DIR}/linux-headers-"$KERNEL_VERSION"_"$KERNEL_VERSION"-*.deb $EXTBOOT_DIR/kerneldeb
