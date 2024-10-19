@@ -1,7 +1,7 @@
 #!/bin/bash
 # install_package() 安装编译需要的软件包
 # set_python() 设置Python版本
-# err_handler() 错误处理函数 
+# err_handler() 错误处理函数
 # finish_build()  运行完成处理函数
 # check_config() 配置检查函数
 # choose_target_board() 板级配置文件选择函数
@@ -107,7 +107,7 @@ install_package() {
             sudo apt-get install -y --no-install-recommends "${COMMON_PACKAGES[@]}"
             echo -e "\e[32m依赖包安装完成。\e[0m"
         else
-            echo -e "\e[33m您的系统不是 Ubuntu 18.04 / 20.04 / 22.04 / 24.04，请自行安装依赖包。\e[0m"       
+            echo -e "\e[33m您的系统不是 Ubuntu 18.04 / 20.04 / 22.04 / 24.04，请自行安装依赖包。\e[0m"
         fi
     else
         # 没有网络连接，提示并退出函数
@@ -576,6 +576,8 @@ function build_cleanall(){
 	rm -rf ubuntu/*.img
 	rm -rf ubuntu/*.*z
     rm -rf rockdev/*
+    rm -rf script_run_flag
+    rm -rf linux*
 	finish_build
 }
 
