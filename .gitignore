@@ -1,2 +1,4 @@
-.BoardConfig.mk
-.target_product
+.*
+/*
+!common/
+!.chips/
