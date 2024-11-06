@@ -55,8 +55,6 @@ export RK_BOARD_PRE_BUILD_SCRIPT=app-build.sh
 
 # SOC
 export RK_SOC=rk3588
-# build.sh save 打包时名称
-export RK_PKG_NAME=lubancat-${RK_UBOOT_DEFCONFIG}
 # 定义默认rootfs为 debian
 export RK_ROOTFS_SYSTEM=debian
 # 定义默认rootfs是否为桌面版  desktop :桌面版(可替换为 xfce lxde gnome)  lite ：控制台版
